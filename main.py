@@ -86,7 +86,7 @@ class Alien(pygame.sprite.Sprite):
             if self.rect.left < 0:
                 self.direction = True
 
-
+#ПРОВЕРКА ВЕТОК
 SPRITE_SHEET = pygame.image.load("Sprites/SpaceInvaders.png").convert_alpha()
 
 player = Player(400,550)
