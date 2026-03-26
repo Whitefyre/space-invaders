@@ -66,11 +66,11 @@ class Alien(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = get_frame(SPRITE_SHEET, 4, 20, 8, 7)
-        self.image = pygame.transform.scale_by(self.image, 10)
+        self.image = pygame.transform.scale_by(self.image, 5)
         self.rect = self.image.get_frect()
         self.rect.center = (x, y)
         self.direction = True
-        self.speed = 400
+        self.speed = 150
 
     def update(self, dt):
         self.movement(dt)
@@ -86,7 +86,7 @@ class Alien(pygame.sprite.Sprite):
             if self.rect.left < 0:
                 self.direction = True
 
-#ПРОВЕРКА ВЕТОК
+
 SPRITE_SHEET = pygame.image.load("Sprites/SpaceInvaders.png").convert_alpha()
 
 player = Player(400,550)
@@ -132,6 +132,8 @@ while running:
 
     for x,y in warm_stars:
         pygame.draw.circle(screen, warm_color, (x, y), random.choice([1, 1, 1, 2]))
+
+    collisions = pygame.sprite.groupcollide(alien_group, bullet_group, True, True)
 
     keys = pygame.key.get_pressed()
     player_group.update(delta_time, keys)
