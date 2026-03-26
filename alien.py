@@ -9,22 +9,31 @@ class Alien(pygame.sprite.Sprite):
         self.image = pygame.transform.scale_by(self.image, 5)
         self.rect = self.image.get_frect()
         self.rect.center = (x, y)
-        self.direction = True
-        self.speed = 150
+        self.direction = 1
+        self.speed = 70
+        self.move_timer = 0
+        self.walking_permission = False
 
     def update(self, dt):
-        self.movement(dt)
+        self.new_movement(dt)
 
+    def new_movement(self, dt):
+        self.move_timer += dt
 
-    def movement(self, dt):
-        if self.direction:
-            self.rect.centerx += self.speed * dt
-            if self.rect.right > 800:
-                self.direction = False
-        else:
-            self.rect.centerx -= self.speed * dt
-            if self.rect.left < 0:
-                self.direction = True
+        if self.move_timer < 0.3:
+            self.rect.centerx += self.speed * dt * self.direction
 
-alien = Alien(400,250)
-alien_group = pygame.sprite.Group(alien)
+        if self.move_timer >= 0.6:
+            self.move_timer = 0
+
+        if self.rect.right > 800 or self.rect.left < 0:
+            self.direction *= -1
+    # def movement(self, dt):
+    #     if self.direction:
+    #         self.rect.centerx += self.speed * dt
+    #         if self.rect.right > 800:
+    #             self.direction = False
+    #     else:
+    #         self.rect.centerx -= self.speed * dt
+    #         if self.rect.left < 0:
+    #             self.direction = True
