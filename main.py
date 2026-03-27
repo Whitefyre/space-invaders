@@ -8,15 +8,25 @@ from settings import SPRITE_SHEET
 
 screen = pygame.display.set_mode((800, 600))
 
+def one_line_down(group):
+    for sprite in group:
+        if sprite.rect.right > 800 or sprite.rect.left < 0:
+            return True
+    return False
 
 player = Player(400,550)
 player_group = pygame.sprite.Group(player)
 
 bullet_group = pygame.sprite.Group()
 
+x, y = 100, 250
+alien_group = pygame.sprite.Group()
+for alien in range(6):
+    x += 50
+    new_alien = Alien(x, y)
+    alien_group.add(new_alien)
 
-alien = Alien(400,250)
-alien_group = pygame.sprite.Group(alien)
+
 
 
 pygame.init()
@@ -50,7 +60,6 @@ while running:
                     bullet_group.add(bullet)
     delta_time = clock.tick(144) / 1000.0
 
-
     #GRAPHICS
 
     screen.fill(background_color)
@@ -65,6 +74,11 @@ while running:
         pygame.draw.circle(screen, warm_color, (x, y), random.choice([1, 1, 1, 2]))
 
     collisions = pygame.sprite.groupcollide(alien_group, bullet_group, True, True)
+
+    if one_line_down(alien_group):
+        for alien in alien_group:
+            alien.direction *= -1
+            alien.rect.centery += 10
 
     keys = pygame.key.get_pressed()
     player_group.update(delta_time, keys)

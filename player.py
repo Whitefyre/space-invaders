@@ -13,10 +13,21 @@ class Player(pygame.sprite.Sprite):
 
 
     def update(self, dt, keys):
+        self.move(dt, keys)
+        self.in_bounds()
+
+    def move(self, dt, keys):
         if keys[pygame.K_LEFT]:
             self.rect.centerx -= self.speed * dt
         if keys[pygame.K_RIGHT]:
             self.rect.centerx += self.speed * dt
+
+
+    def in_bounds(self):
+        if self.rect.left <= 0:
+            self.rect.left = 0
+        if self.rect.right >= 800:
+            self.rect.right = 800
 
 
     def fire(self):
