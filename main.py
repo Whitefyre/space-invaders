@@ -6,43 +6,39 @@ from bullet import Bullet
 from utils import get_frame
 from settings import SPRITE_SHEET
 
-screen = pygame.display.set_mode((800, 600))
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_LEFT = 0
+SCREEN_RIGHT = SCREEN_WIDTH
+SCREEN_TOP = 0
+SCREEN_BOTTOM = SCREEN_HEIGHT
+PLAYER_POS = (400, 500)
+ALIEN_POS_X = 0
+ALIEN_POS_Y = 250
+ALIEN_NUMBER = 11
+DISTANCE_BETWEEN_ALIENS = 52
 
-# def one_line_down(group):
-#     for sprite in group:
-#         if sprite.rect.right > 800 or sprite.rect.left < 0:
-#             return True
-#     return False
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+
 def one_line_down(group):
     for sprite in group:
-        if sprite.rect.right > 800 or sprite.rect.left < 0:
+        if sprite.rect.right > SCREEN_RIGHT or sprite.rect.left < SCREEN_LEFT:
             return True
     return False
 
-player = Player(400,550)
+player = Player(*PLAYER_POS)
 player_group = pygame.sprite.Group(player)
 
 bullet_group = pygame.sprite.Group()
 
-x, y = 0, 250
 alien_group = pygame.sprite.Group()
-for alien in range(11):
+
+for alien in range(ALIEN_NUMBER):
     # Distance between aliens horizontally
-    x += 52
-    new_alien = Alien(x, y)
+    ALIEN_POS_X += DISTANCE_BETWEEN_ALIENS
+    new_alien = Alien(ALIEN_POS_X, ALIEN_POS_Y)
     alien_group.add(new_alien)
-alien_list = alien_group
-for i, sprite in enumerate(alien_list):
-    if i == 0:
-        right = sprite.rect.right
-        print(right)
-    if i == 1:
-        left = sprite.rect.left
-        print(left)
-        raznitsa = left - right
-        print(raznitsa)
-
-
 
 
 pygame.init()
@@ -94,14 +90,7 @@ while running:
 
     collisions = pygame.sprite.groupcollide(alien_group, bullet_group, True, True)
 
-    # if one_line_down(alien_group):
-    #     for alien in alien_group:
-    #         alien.direction *= -1
-    #         alien.rect.centery += 10
-    if one_line_down(alien_group):
-        for alien in alien_group:
-            alien.direction *= -1
-            alien.rect.centery += 10
+    
     for bullet in bullet_group:
         print(f"Rect: x={bullet.rect.x:.1f}, y={bullet.rect.y:.1f}, w={bullet.rect.w:.1f}, h={bullet.rect.h:.1f}")
     keys = pygame.key.get_pressed()

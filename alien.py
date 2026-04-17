@@ -6,7 +6,6 @@ class Alien(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = get_frame(SPRITE_SHEET, 4, 20, 8, 7)
-        # self.image = pygame.transform.scale_by(self.image, 5)
         self.image = pygame.transform.scale(self.image, (32, 32))
         self.rect = self.image.get_frect()
         self.rect.center = (x, y)
@@ -21,12 +20,12 @@ class Alien(pygame.sprite.Sprite):
     def new_movement(self, dt):
         self.move_timer += dt
 
-        # if self.move_timer < 0.3:
-        #     self.rect.centerx += self.speed * dt * self.direction
-        #
-        # if self.move_timer >= 0.5:
-        #     self.move_timer = 0
+        if self.move_timer < 0.3:
+            self.rect.centerx += self.speed * dt * self.direction
 
-        # if self.rect.right > 800 or self.rect.left < 0:
-        #     self.direction *= -1
-        #     self.rect.centery += 10
+        if self.move_timer >= 0.5:
+            self.move_timer = 0
+
+        if self.rect.right > 800 or self.rect.left < 0:
+            self.direction *= -1
+            self.rect.centery += 10
