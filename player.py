@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = get_frame(SPRITE_SHEET, 68, 4, 9, 10)
-        self.image = pygame.transform.scale_by(self.image, 10)
+        self.image = pygame.transform.scale(self.image, (32,32))
         self.rect = self.image.get_frect()
         self.rect.center = (x, y)
         self.speed = 300

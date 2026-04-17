@@ -47,8 +47,6 @@ clock = pygame.time.Clock()
 running = True
 
 
-for alien in alien_group:
-    print(f"Rect: x={alien.rect.x:.1f}, y={alien.rect.y:.1f}, w={alien.rect.w:.1f}, h={alien.rect.h:.1f}")
 
 white_stars = [(random.randint(0, 800), random.randint(0, 600)) for _ in range(100)]
 warm_stars = [(random.randint(0, 800), random.randint(0, 600)) for _ in range(100)]
@@ -59,7 +57,7 @@ warm_color = (255, 240, 180)
 blue_color = (180, 200, 255)
 
 background_color = (10, 20, 40)
-
+print(player.rect)
 while running:
     # GAME LOGIC
 
@@ -90,9 +88,12 @@ while running:
 
     collisions = pygame.sprite.groupcollide(alien_group, bullet_group, True, True)
 
-    
-    for bullet in bullet_group:
-        print(f"Rect: x={bullet.rect.x:.1f}, y={bullet.rect.y:.1f}, w={bullet.rect.w:.1f}, h={bullet.rect.h:.1f}")
+    if one_line_down(alien_group):
+        for alien in alien_group:
+            alien.direction *= -1
+            alien.rect.centery += 10
+
+
     keys = pygame.key.get_pressed()
     player_group.update(delta_time, keys)
     player_group.draw(screen)
