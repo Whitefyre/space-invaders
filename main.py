@@ -24,12 +24,23 @@ player_group = pygame.sprite.Group(player)
 
 bullet_group = pygame.sprite.Group()
 
-x, y = 100, 250
+x, y = 0, 250
 alien_group = pygame.sprite.Group()
-for alien in range(6):
-    x += 50
+for alien in range(11):
+    # Distance between aliens horizontally
+    x += 52
     new_alien = Alien(x, y)
     alien_group.add(new_alien)
+alien_list = alien_group
+for i, sprite in enumerate(alien_list):
+    if i == 0:
+        right = sprite.rect.right
+        print(right)
+    if i == 1:
+        left = sprite.rect.left
+        print(left)
+        raznitsa = left - right
+        print(raznitsa)
 
 
 
@@ -39,6 +50,9 @@ pygame.init()
 clock = pygame.time.Clock()
 running = True
 
+
+for alien in alien_group:
+    print(f"Rect: x={alien.rect.x:.1f}, y={alien.rect.y:.1f}, w={alien.rect.w:.1f}, h={alien.rect.h:.1f}")
 
 white_stars = [(random.randint(0, 800), random.randint(0, 600)) for _ in range(100)]
 warm_stars = [(random.randint(0, 800), random.randint(0, 600)) for _ in range(100)]
@@ -88,7 +102,8 @@ while running:
         for alien in alien_group:
             alien.direction *= -1
             alien.rect.centery += 10
-
+    for bullet in bullet_group:
+        print(f"Rect: x={bullet.rect.x:.1f}, y={bullet.rect.y:.1f}, w={bullet.rect.w:.1f}, h={bullet.rect.h:.1f}")
     keys = pygame.key.get_pressed()
     player_group.update(delta_time, keys)
     player_group.draw(screen)
