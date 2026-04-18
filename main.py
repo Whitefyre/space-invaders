@@ -26,6 +26,23 @@ def one_line_down(group):
         if sprite.rect.right > SCREEN_RIGHT or sprite.rect.left < SCREEN_LEFT:
             return True
     return False
+def creating_stars(number):
+    stars = []
+    for _ in range(number):
+        stars.append((random.randint(0, 800), random.randint(0, 600)))
+    return stars
+
+
+def moving_stars(color, stars, speed):
+    for i in range(len(stars)):
+        x, y = stars[i]
+        y += speed
+        pygame.draw.circle(screen, color, (x, y), 1)
+        if y > SCREEN_BOTTOM:
+            y = SCREEN_TOP
+            x = random.randint(SCREEN_LEFT, SCREEN_RIGHT)
+        stars[i] = (x, y)
+
 
 player = Player(*PLAYER_POS)
 player_group = pygame.sprite.Group(player)
@@ -57,7 +74,11 @@ warm_color = (255, 240, 180)
 blue_color = (180, 200, 255)
 
 background_color = (10, 20, 40)
-print(player.rect)
+
+number_of_white_stars = creating_stars(100)
+number_of_warm_stars = creating_stars(100)
+number_of_blue_stars = creating_stars(100)
+
 while running:
     # GAME LOGIC
 
@@ -77,14 +98,19 @@ while running:
 
     screen.fill(background_color)
 
-    for x,y in blue_stars:
-        pygame.draw.circle(screen, blue_color, (x, y), random.choice([1, 1, 1, 2]))
+    moving_stars((230, 230, 255), number_of_white_stars, 1)
+    moving_stars((255, 240, 180), number_of_warm_stars, 1.5)
+    moving_stars((180, 200, 255), number_of_blue_stars, 2)
 
-    for x,y in white_stars:
-        pygame.draw.circle(screen, white_color, (x, y), random.choice([1, 1, 1, 2]))
 
-    for x,y in warm_stars:
-        pygame.draw.circle(screen, warm_color, (x, y), random.choice([1, 1, 1, 2]))
+    # for x,y in blue_stars:
+    #     pygame.draw.circle(screen, blue_color, (x, y), random.choice([1, 1, 1, 2]))
+    #
+    # for x,y in white_stars:
+    #     pygame.draw.circle(screen, white_color, (x, y), random.choice([1, 1, 1, 2]))
+    #
+    # for x,y in warm_stars:
+    #     pygame.draw.circle(screen, warm_color, (x, y), random.choice([1, 1, 1, 2]))
 
     collisions = pygame.sprite.groupcollide(alien_group, bullet_group, True, True)
 
