@@ -26,6 +26,8 @@ def one_line_down(group):
         if sprite.rect.right > SCREEN_RIGHT or sprite.rect.left < SCREEN_LEFT:
             return True
     return False
+
+
 def creating_stars(number):
     stars = []
     for _ in range(number):
@@ -63,16 +65,6 @@ pygame.init()
 clock = pygame.time.Clock()
 running = True
 
-
-
-white_stars = [(random.randint(0, 800), random.randint(0, 600)) for _ in range(100)]
-warm_stars = [(random.randint(0, 800), random.randint(0, 600)) for _ in range(100)]
-blue_stars = [(random.randint(0, 800), random.randint(0, 600)) for _ in range(100)]
-
-white_color = (230, 230, 255)
-warm_color = (255, 240, 180)
-blue_color = (180, 200, 255)
-
 background_color = (10, 20, 40)
 
 number_of_white_stars = creating_stars(100)
@@ -98,19 +90,11 @@ while running:
 
     screen.fill(background_color)
 
+    #STARS
     moving_stars((230, 230, 255), number_of_white_stars, 1)
     moving_stars((255, 240, 180), number_of_warm_stars, 1.5)
     moving_stars((180, 200, 255), number_of_blue_stars, 2)
 
-
-    # for x,y in blue_stars:
-    #     pygame.draw.circle(screen, blue_color, (x, y), random.choice([1, 1, 1, 2]))
-    #
-    # for x,y in white_stars:
-    #     pygame.draw.circle(screen, white_color, (x, y), random.choice([1, 1, 1, 2]))
-    #
-    # for x,y in warm_stars:
-    #     pygame.draw.circle(screen, warm_color, (x, y), random.choice([1, 1, 1, 2]))
 
     collisions = pygame.sprite.groupcollide(alien_group, bullet_group, True, True)
 
