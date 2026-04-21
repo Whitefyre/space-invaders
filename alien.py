@@ -3,17 +3,23 @@ from utils import get_frame
 from settings import SPRITE_SHEET
 
 class Alien(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, alien_type):
         pygame.sprite.Sprite.__init__(self)
         self.images = [
         get_frame(SPRITE_SHEET, 4, 20, 8, 8),#первый пришелец
         get_frame(SPRITE_SHEET, 20, 20, 8, 8),
+        get_frame(SPRITE_SHEET, 3, 4, 11, 8),#второй пришелец
+        get_frame(SPRITE_SHEET, 19, 13, 11, 9),
         get_frame(SPRITE_SHEET, 34, 52, 13, 9),#спрайт взрыва
         get_frame(SPRITE_SHEET, 33, 67, 15, 11)
         ]
-        self.images = [pygame.transform.scale(img, (32, 32)) for img in self.images]
+        self.images = [pygame.transform.scale(img, (40, 32)) for img in self.images]
+        self.alien_type = alien_type
+        if self.alien_type == 0:
+            self.image = self.images[0]
+        if self.alien_type == 1:
+            self.image = self.images[2]
         self.first_alien_animation = self.images[0:2]
-        self.image = self.images[0]
         self.rect = self.image.get_frect()
         self.rect.center = (x, y)
         self.speed = 70
@@ -37,8 +43,8 @@ class Alien(pygame.sprite.Sprite):
 
 
         if self.move_timer >= 1:
-            self.frame = (self.frame + 1) % len(self.first_alien_animation)
-            self.image = self.first_alien_animation[self.frame]
+            # self.frame = (self.frame + 1) % len(self.first_alien_animation)
+            # self.image = self.first_alien_animation[self.frame]
             self.move_timer = 0
 
 
@@ -47,7 +53,7 @@ class Alien(pygame.sprite.Sprite):
 
         if self.death_timer > 0.6:
             self.kill()
-        if self.death_timer < 0.6:
-            self.image = self.images[3]
-        if self.death_timer < 0.3:
-            self.image = self.images[2]
+        # if self.death_timer < 0.6:
+        #     self.image = self.images[3]
+        # if self.death_timer < 0.3:
+        #     self.image = self.images[2]

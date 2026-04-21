@@ -46,13 +46,22 @@ def collisions():
                 alien.death_status = True
 
 
-for alien in range(ALIEN_NUMBER):
-    # Distance between aliens horizontally
-    ALIEN_POS_X += DISTANCE_BETWEEN_ALIENS
-    new_alien = Alien(ALIEN_POS_X, ALIEN_POS_Y)
-    alien_group.add(new_alien)
+for row in range(ALIEN_ROW):
+    for col in range(ALIEN_COL):
+        ALIEN_POS_X = 100 + col * 60
+        ALIEN_POS_Y = 50 + row * 40
+        if row == 0:
+            alien_type = 0
+        else:
+            alien_type = 1
 
+        new_alien = Alien(ALIEN_POS_X, ALIEN_POS_Y, alien_type)
+        alien_group.add(new_alien)
 
+# for row in range(rows):
+#     for col in range(cols):
+#         x = 100 + col * 50
+#         y = 50 + row * 40
 pygame.init()
 
 clock = pygame.time.Clock()
