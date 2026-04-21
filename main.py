@@ -1,31 +1,13 @@
 import pygame
 import random
+from settings import *
 from alien import Alien
 from player import Player
 from bullet import Bullet
 from utils import get_frame
-from settings import SPRITE_SHEET
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-SCREEN_LEFT = 0
-SCREEN_RIGHT = SCREEN_WIDTH
-SCREEN_TOP = 0
-SCREEN_BOTTOM = SCREEN_HEIGHT
-PLAYER_POS = (400, 500)
-ALIEN_POS_X = 0
-ALIEN_POS_Y = 250
-ALIEN_NUMBER = 11
-DISTANCE_BETWEEN_ALIENS = 60
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-
-def one_line_down(group):
-    for sprite in group:
-        if sprite.rect.right > SCREEN_RIGHT or sprite.rect.left < SCREEN_LEFT:
-            return True
-    return False
 
 
 def creating_stars(number):
@@ -52,6 +34,17 @@ player_group = pygame.sprite.Group(player)
 bullet_group = pygame.sprite.Group()
 
 alien_group = pygame.sprite.Group()
+
+direction = 1
+
+
+def collisions():
+    for bullet in bullet_group:
+        for alien in alien_group:
+            if bullet.rect.colliderect(alien):
+                bullet.kill()
+                alien.death_status = True
+
 
 for alien in range(ALIEN_NUMBER):
     # Distance between aliens horizontally
@@ -86,6 +79,13 @@ while running:
                     bullet_group.add(bullet)
     delta_time = clock.tick(144) / 1000.0
 
+    hit_wall = False
+    for sprite in alien_group:
+        if sprite.rect.right >= SCREEN_RIGHT or sprite.rect.left <= SCREEN_LEFT:
+            hit_wall = True
+            break
+
+
     #GRAPHICS
 
     screen.fill(background_color)
@@ -96,18 +96,18 @@ while running:
     moving_stars((180, 200, 255), number_of_blue_stars, 2)
 
 
-    if one_line_down(alien_group):
+    if hit_wall:
+        direction *= -1
         for alien in alien_group:
-            alien.direction *= -1
             alien.rect.centery += 10
 
-
+    collisions()
     keys = pygame.key.get_pressed()
     player_group.update(delta_time, keys)
     player_group.draw(screen)
     bullet_group.update()
     bullet_group.draw(screen)
-    alien_group.update(delta_time)
+    alien_group.update(delta_time, direction)
     alien_group.draw(screen)
     pygame.display.flip()
 
