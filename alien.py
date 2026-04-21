@@ -23,7 +23,8 @@ class Alien(pygame.sprite.Sprite):
     def update(self, dt, direction):
         self.new_movement(dt, direction)
         if self.death_status:
-            self.death()
+            self.death(dt)
+            print(self.death_timer)
 
     def new_movement(self, dt, direction):
         self.move_timer += dt
@@ -35,8 +36,12 @@ class Alien(pygame.sprite.Sprite):
             self.move_timer = 0
 
 
-    def death(self):
+    def death(self, dt):
         self.death_timer += dt
 
-        # if self.death_timer < 0.3:
-        #     self.image = self.images[1]
+        if self.death_timer > 0.6:
+            self.kill()
+        if self.death_timer < 0.6:
+            self.image = self.images[2]
+        if self.death_timer < 0.3:
+            self.image = self.images[1]
