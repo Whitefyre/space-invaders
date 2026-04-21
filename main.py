@@ -52,8 +52,14 @@ for row in range(ALIEN_ROW):
         ALIEN_POS_Y = 50 + row * 40
         if row == 0:
             alien_type = 0
-        else:
+        elif row == 1:
             alien_type = 1
+        elif row == 2:
+            alien_type = 2
+        elif row == 3:
+            alien_type = 3
+        elif row == 4:
+            alien_type = 4
 
         new_alien = Alien(ALIEN_POS_X, ALIEN_POS_Y, alien_type)
         alien_group.add(new_alien)
