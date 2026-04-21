@@ -23,7 +23,7 @@ class Alien(pygame.sprite.Sprite):
         if self.move_timer < 0.3:
             self.rect.centerx += self.speed * dt * self.direction
 
-        if self.move_timer >= 0.5:
+        if self.move_timer >= 1:
             self.move_timer = 0
 
         # if self.rect.right > 800 or self.rect.left < 0:

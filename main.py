@@ -16,7 +16,7 @@ PLAYER_POS = (400, 500)
 ALIEN_POS_X = 0
 ALIEN_POS_Y = 250
 ALIEN_NUMBER = 11
-DISTANCE_BETWEEN_ALIENS = 52
+DISTANCE_BETWEEN_ALIENS = 60
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -95,8 +95,6 @@ while running:
     moving_stars((255, 240, 180), number_of_warm_stars, 1.5)
     moving_stars((180, 200, 255), number_of_blue_stars, 2)
 
-
-    collisions = pygame.sprite.groupcollide(alien_group, bullet_group, True, True)
 
     if one_line_down(alien_group):
         for alien in alien_group:
