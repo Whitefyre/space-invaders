@@ -49,10 +49,13 @@ def player_bullet_to_alien_collision():
 
 def alien_bullet_to_player_collision():
     for bullet in alien_bullet_group:
-        print(player_group)
+        print(player.rect.centerx, player.rect.centery)
         if bullet.rect.colliderect(player):
             bullet.kill()
-            player.death_status = True
+            player.rect.centerx, player.rect.centery = PLAYER_POS
+            player.hp -= 1
+            if player.hp < 1:
+                player.death_status = True
 
 
 for row in range(ALIEN_ROW):
