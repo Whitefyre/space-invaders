@@ -69,11 +69,11 @@ class Alien(pygame.sprite.Sprite):
     def death(self, dt):
         self.death_timer += dt
 
-        if self.death_timer > 0.6:
+        if self.death_timer > 0.3:
             self.kill()
-        if self.death_timer < 0.6:
-            self.image = self.explosion_frames[1]
         if self.death_timer < 0.3:
+            self.image = self.explosion_frames[1]
+        if self.death_timer < 0.15:
             self.image = self.explosion_frames[0]
 
 

@@ -47,6 +47,14 @@ def player_bullet_to_alien_collision():
                 alien.death_status = True
 
 
+def alien_bullet_to_player_collision():
+    for bullet in alien_bullet_group:
+        print(player_group)
+        if bullet.rect.colliderect(player):
+            bullet.kill()
+            player.death_status = True
+
+
 for row in range(ALIEN_ROW):
     for col in range(ALIEN_COL):
         ALIEN_POS_X = 100 + col * 60
@@ -69,7 +77,6 @@ for row in range(ALIEN_ROW):
 def alien_shooting():
     alien_list = list(alien_group.sprites())
     random_alien = alien_list[random.randint(0, len(alien_list) - 1)]
-    print(random_alien.rect.center)
     x, y = random_alien.fire()
     if len(alien_bullet_group) < 4:
         bullet = Bullet(x, y, "alien")
@@ -128,6 +135,7 @@ while running:
     if len(alien_group) > 0:
         alien_shooting()
     player_bullet_to_alien_collision()
+    alien_bullet_to_player_collision()
     keys = pygame.key.get_pressed()
     player_group.update(delta_time, keys)
     player_group.draw(screen)
