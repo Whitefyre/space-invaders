@@ -31,15 +31,16 @@ def moving_stars(color, stars, speed):
 player = Player(*PLAYER_POS)
 player_group = pygame.sprite.Group(player)
 
-bullet_group = pygame.sprite.Group()
+player_bullet_group = pygame.sprite.Group()
 
 alien_group = pygame.sprite.Group()
+alien_bullet_group = pygame.sprite.Group()
 
 direction = 1
 
 
-def collisions():
-    for bullet in bullet_group:
+def player_bullet_to_alien_collision():
+    for bullet in player_bullet_group:
         for alien in alien_group:
             if bullet.rect.colliderect(alien):
                 bullet.kill()
@@ -64,10 +65,18 @@ for row in range(ALIEN_ROW):
         new_alien = Alien(ALIEN_POS_X, ALIEN_POS_Y, alien_type)
         alien_group.add(new_alien)
 
-# for row in range(rows):
-#     for col in range(cols):
-#         x = 100 + col * 50
-#         y = 50 + row * 40
+
+def alien_shooting():
+    alien_list = list(alien_group.sprites())
+    random_alien = alien_list[random.randint(0, len(alien_list) - 1)]
+    print(random_alien.rect.center)
+    x, y = random_alien.fire()
+    if len(alien_bullet_group) < 4:
+        bullet = Bullet(x, y, "alien")
+        alien_bullet_group.add(bullet)
+
+
+
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -89,9 +98,9 @@ while running:
             ###FIRE
             if event.key == pygame.K_SPACE:
                 x, y = player.fire()
-                if len(bullet_group) == 0:
-                    bullet = Bullet(x, y)
-                    bullet_group.add(bullet)
+                if len(player_bullet_group) == 0:
+                    bullet = Bullet(x, y, "player")
+                    player_bullet_group.add(bullet)
     delta_time = clock.tick(144) / 1000.0
 
     hit_wall = False
@@ -116,14 +125,18 @@ while running:
         for alien in alien_group:
             alien.rect.centery += 10
 
-    collisions()
+    if len(alien_group) > 0:
+        alien_shooting()
+    player_bullet_to_alien_collision()
     keys = pygame.key.get_pressed()
     player_group.update(delta_time, keys)
     player_group.draw(screen)
-    bullet_group.update()
-    bullet_group.draw(screen)
+    player_bullet_group.update()
+    player_bullet_group.draw(screen)
     alien_group.update(delta_time, direction)
     alien_group.draw(screen)
+    alien_bullet_group.update()
+    alien_bullet_group.draw(screen)
     pygame.display.flip()
 
 pygame.quit()

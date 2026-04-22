@@ -50,6 +50,7 @@ class Alien(pygame.sprite.Sprite):
         self.new_movement(dt, direction)
         if self.death_status:
             self.death(dt)
+        self.fire()
 
 
     def new_movement(self, dt, direction):
@@ -74,3 +75,8 @@ class Alien(pygame.sprite.Sprite):
             self.image = self.explosion_frames[1]
         if self.death_timer < 0.3:
             self.image = self.explosion_frames[0]
+
+
+
+    def fire(self):
+        return self.rect.centerx, self.rect.centery + 10
