@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.death_status = False
         self.death_timer = 0
         self.hp = 3
+        self.respawn_time = 0
 
 
     def update(self, dt, keys):
@@ -25,6 +26,9 @@ class Player(pygame.sprite.Sprite):
         self.in_bounds()
         if self.death_status:
             self.death(dt)
+        else:
+            self.death_timer = 0
+            self.image = self.images[0]
 
     def move(self, dt, keys):
         if keys[pygame.K_LEFT]:
@@ -48,7 +52,7 @@ class Player(pygame.sprite.Sprite):
         self.death_timer += dt
 
         if self.death_timer > 0.3:
-            self.kill()
+            self.image.set_alpha(0)
         if self.death_timer < 0.3:
             self.image = self.images[2]
         if self.death_timer < 0.15:

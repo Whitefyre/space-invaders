@@ -49,13 +49,15 @@ def player_bullet_to_alien_collision():
 
 def alien_bullet_to_player_collision():
     for bullet in alien_bullet_group:
-        print(player.rect.centerx, player.rect.centery)
+        print(player.hp)
         if bullet.rect.colliderect(player):
             bullet.kill()
-            player.rect.centerx, player.rect.centery = PLAYER_POS
             player.hp -= 1
-            if player.hp < 1:
-                player.death_status = True
+            if player.hp == 0:
+                player.kill()
+            player.death_status = True
+            player.respawn_time = pygame.time.get_ticks() + 1000
+
 
 
 for row in range(ALIEN_ROW):
@@ -81,7 +83,7 @@ def alien_shooting():
     alien_list = list(alien_group.sprites())
     random_alien = alien_list[random.randint(0, len(alien_list) - 1)]
     x, y = random_alien.fire()
-    if len(alien_bullet_group) < 4:
+    if len(alien_bullet_group) < 2:
         bullet = Bullet(x, y, "alien")
         alien_bullet_group.add(bullet)
 
@@ -129,6 +131,10 @@ while running:
     moving_stars((255, 240, 180), number_of_warm_stars, 1.5)
     moving_stars((180, 200, 255), number_of_blue_stars, 2)
 
+    if player.death_status:
+        if pygame.time.get_ticks() > player.respawn_time:
+            player.death_status = False
+            player.rect.center = PLAYER_POS
 
     if hit_wall:
         direction *= -1
