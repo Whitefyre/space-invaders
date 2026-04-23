@@ -52,10 +52,8 @@ def alien_bullet_to_player_collision():
         print(player.hp)
         if bullet.rect.colliderect(player):
             bullet.kill()
-            player.hp -= 1
-            if player.hp == 0:
-                player.kill()
-            player.death_status = True
+            player.take_damage(bullet.damage)
+            player.respawn_status = True
             player.respawn_time = pygame.time.get_ticks() + 1000
 
 
@@ -131,9 +129,9 @@ while running:
     moving_stars((255, 240, 180), number_of_warm_stars, 1.5)
     moving_stars((180, 200, 255), number_of_blue_stars, 2)
 
-    if player.death_status:
+    if player.respawn_status:
         if pygame.time.get_ticks() > player.respawn_time:
-            player.death_status = False
+            player.respawn_status = False
             player.rect.center = PLAYER_POS
 
     if hit_wall:

@@ -17,7 +17,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_frect()
         self.rect.center = (x, y)
         self.owner = owner
-
+        self.damage = 1
 
     def update(self):
         if self.owner == "player":
