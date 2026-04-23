@@ -1,6 +1,6 @@
 import pygame
 from utils import get_frame
-from settings import SPRITE_SHEET
+from settings import SPRITE_SHEET, PLAYER_POS
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -32,6 +32,8 @@ class Player(pygame.sprite.Sprite):
             self.image = self.images[0]
         if not self.alive:
             self.kill()
+        if self.respawn_status:
+            self.respawn()
 
 
     def move(self, dt, keys):
@@ -66,4 +68,12 @@ class Player(pygame.sprite.Sprite):
         self.hp -= damage
         if self.hp <= 0:
             self.alive = False
+        self.respawn_status = True
+        self.respawn_time = pygame.time.get_ticks() + 1000
+
+
+    def respawn(self):
+        if pygame.time.get_ticks() > self.respawn_time:
+            self.rect.center = PLAYER_POS
+            self.respawn_status = False
 
