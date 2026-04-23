@@ -1,5 +1,8 @@
 import pygame
 import random
+
+from pygame.sprite import groupcollide
+
 from settings import *
 from alien import Alien
 from player import Player
@@ -40,11 +43,10 @@ direction = 1
 
 
 def player_bullet_to_alien_collision():
-    for bullet in player_bullet_group:
-        for alien in alien_group:
-            if bullet.rect.colliderect(alien):
-                bullet.kill()
-                alien.death_status = True
+    collisions = pygame.sprite.groupcollide(player_bullet_group, alien_group, True, False)
+    for bullet, aliens in collisions.items():
+        for alien in aliens:
+            alien.death_switch()
 
 
 def alien_bullet_to_player_collision():

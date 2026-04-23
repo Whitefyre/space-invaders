@@ -80,3 +80,6 @@ class Alien(pygame.sprite.Sprite):
 
     def fire(self):
         return self.rect.centerx, self.rect.centery + 10
+
+    def death_switch(self):
+        self.death_status = True
