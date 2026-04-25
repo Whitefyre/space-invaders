@@ -133,8 +133,8 @@ while running:
         for alien in alien_group:
             alien.rect.centery += 10
 
-    if len(alien_group) > 0:
-        alien_shooting()
+    # if len(alien_group) > 0:
+    #     alien_shooting()
     player_bullet_to_alien_collision()
     alien_bullet_to_player_collision()
     keys = pygame.key.get_pressed()

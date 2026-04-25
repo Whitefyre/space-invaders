@@ -1,7 +1,6 @@
 import pygame
 import random
 
-from main import creating_stars
 from settings import *
 from alien import Alien
 from player import Player
@@ -30,8 +29,13 @@ class Game(pygame.sprite.Sprite):
         self.player_group = pygame.sprite.Group(self.player)
         self.player_bullet_group = pygame.sprite.Group()
 
+        self.alien = Alien(ALIEN_POS_X, ALIEN_POS_Y, alien_type)
         self.alien_group = pygame.sprite.Group()
         self.alien_bullet_group = pygame.sprite.Group()
+
+        self.clock = pygame.time.Clock()
+        self.delta_time = self.clock.tick(144) / 1000.0
+        self.running = True
 
         self.direction = 1
 
@@ -45,6 +49,10 @@ class Game(pygame.sprite.Sprite):
 
         self.handle_collision()
 
+        self.create_aliens()
+        self.alien_shooting()
+
+        self.event_types()
 
 
     def creating_stars(self):
@@ -74,3 +82,44 @@ class Game(pygame.sprite.Sprite):
             if bullet.rect.colliderect(self.player):
                 bullet.kill()
                 self.player.take_damage(bullet.damage)
+
+
+    def create_aliens(self):
+        for row in range(ALIEN_ROW):
+            for col in range(ALIEN_COL):
+                ALIEN_POS_X = START_X_POSITION + col * HORIZONTAL_STEP
+                ALIEN_POS_Y = START_Y_POSITION + row * VERTICAL_STEP
+                if row == 0:
+                    alien_type = 0
+                elif row == 1:
+                    alien_type = 1
+                elif row == 2:
+                    alien_type = 2
+                elif row == 3:
+                    alien_type = 3
+                elif row == 4:
+                    alien_type = 4
+
+                alien = Alien(ALIEN_POS_X, ALIEN_POS_Y, alien_type)
+                self.alien_group.add(alien)
+
+    def alien_shooting(self):
+        alien_list = list(self.alien_group.sprites())
+        random_alien = alien_list[random.randint(0, len(alien_list) - 1)]
+        x, y = random_alien.fire()
+        if len(self.alien_bullet_group) < MAXIMUM_NUMBER_OF_ALIEN_BULLETS:
+            bullet = Bullet(x, y, "alien")
+            self.alien_bullet_group.add(bullet)
+
+
+    def event_types(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                ###FIRE
+                if event.key == pygame.K_SPACE:
+                    x, y = self.player.fire()
+                    if len(self.player_bullet_group) == 0:
+                        bullet = Bullet(x, y, "player")
+                        self.player_bullet_group.add(bullet)
