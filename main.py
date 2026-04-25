@@ -116,7 +116,10 @@ while running:
         if sprite.rect.right >= SCREEN_RIGHT or sprite.rect.left <= SCREEN_LEFT:
             hit_wall = True
             break
-
+    if hit_wall:
+        direction *= -1
+        for alien in alien_group:
+            alien.rect.centery += 10
 
     #GRAPHICS
 
@@ -126,12 +129,6 @@ while running:
     moving_stars((230, 230, 255), number_of_white_stars, 1)
     moving_stars((255, 240, 180), number_of_warm_stars, 1.5)
     moving_stars((180, 200, 255), number_of_blue_stars, 2)
-
-
-    if hit_wall:
-        direction *= -1
-        for alien in alien_group:
-            alien.rect.centery += 10
 
     # if len(alien_group) > 0:
     #     alien_shooting()

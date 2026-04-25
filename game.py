@@ -20,6 +20,7 @@ class Game(pygame.sprite.Sprite):
         self.white_stars_color = (230, 230, 255)
         self.warm_stars_color = (255, 240, 180)
         self.blue_stars_color = (180, 200, 255)
+        self.background_color = (10, 20, 40)
 
         self.white_stars_speed = 1
         self.warm_stars_speed = 1.5
@@ -51,8 +52,17 @@ class Game(pygame.sprite.Sprite):
 
         self.create_aliens()
         self.alien_shooting()
+        self.alien_hit_wall()
 
         self.event_types()
+
+        self.handle()
+
+    def draw(self, screen):
+        screen.fill(self.background_color)
+
+
+
 
 
     def creating_stars(self):
@@ -123,3 +133,28 @@ class Game(pygame.sprite.Sprite):
                     if len(self.player_bullet_group) == 0:
                         bullet = Bullet(x, y, "player")
                         self.player_bullet_group.add(bullet)
+
+
+    def alien_hit_wall(self):
+        hit_wall = False
+        for sprite in self.alien_group:
+            if sprite.rect.right >= SCREEN_RIGHT or sprite.rect.left <= SCREEN_LEFT:
+                hit_wall = True
+                break
+        if hit_wall:
+            self.direction *= -1
+            for alien in self.alien_group:
+                alien.rect.centery += 10
+
+
+    def handle(self):
+        keys = pygame.key.get_pressed()
+        self.player_group.update(self.delta_time, keys)
+        self.player_group.draw(self.screen)
+        self.player_bullet_group.update()
+        self.player_bullet_group.draw(self.screen)
+        self.alien_group.update(self.delta_time, self.direction)
+        self.alien_group.draw(self.screen)
+        self.alien_bullet_group.update()
+        self.alien_bullet_group.draw(self.screen)
+        pygame.display.flip()
